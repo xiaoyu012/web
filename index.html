@@ -1,0 +1,713 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>AI 工具安装与配置教程 - Claude Code & Codex</title>
+  <style>
+    :root {
+      --bg: #0a0f1e;
+      --panel: #111827;
+      --muted: #94a3b8;
+      --text: #e5e7eb;
+      --text-bright: #f8fafc;
+      --accent: #22d3ee;
+      --accent-2: #a78bfa;
+      --accent-3: #f472b6;
+      --ok: #34d399;
+      --warn: #fbbf24;
+      --code: #0b1020;
+      --border: #1f2937;
+      --radius: 16px;
+      --shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background: 
+        radial-gradient(1200px 600px at 10% -10%, rgba(167, 139, 250, 0.18), transparent 60%),
+        radial-gradient(800px 500px at 110% 10%, rgba(34, 211, 238, 0.15), transparent 50%),
+        radial-gradient(1000px 400px at 50% 100%, rgba(244, 114, 182, 0.12), transparent 50%),
+        var(--bg);
+      background-attachment: fixed;
+      color: var(--text);
+      font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", "Helvetica Neue", Arial, sans-serif;
+      min-height: 100vh;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
+    @keyframes glow {
+      0%, 100% {
+        box-shadow: 0 0 20px rgba(34, 211, 238, 0.3), 0 0 40px rgba(167, 139, 250, 0.2);
+      }
+      50% {
+        box-shadow: 0 0 30px rgba(34, 211, 238, 0.5), 0 0 60px rgba(167, 139, 250, 0.3);
+      }
+    }
+
+    .wrap {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      animation: fadeInUp 0.8s ease-out;
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 40px;
+      padding: 60px 20px;
+    }
+
+    .hero h1 {
+      margin: 0 0 20px;
+      font-size: 48px;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2), var(--accent-3));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -1px;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .hero p {
+      color: var(--muted);
+      font-size: 18px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 24px;
+      padding: 6px;
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(10px);
+    }
+
+    .tab {
+      flex: 1;
+      padding: 16px 24px;
+      border: none;
+      border-radius: 12px;
+      background: transparent;
+      color: var(--muted);
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .tab::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: -1;
+    }
+
+    .tab:hover {
+      color: var(--text-bright);
+      transform: translateY(-2px);
+    }
+
+    .tab.active {
+      color: var(--text-bright);
+      background: linear-gradient(135deg, rgba(34, 211, 238, 0.2), rgba(167, 139, 250, 0.2));
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .tab.active::before {
+      opacity: 0.15;
+    }
+
+    .tab-content {
+      display: none;
+      animation: fadeInUp 0.5s ease-out;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .card {
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+      border: 1px solid var(--border);
+      backdrop-filter: saturate(130%) blur(10px);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      margin-bottom: 24px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+    }
+
+    header {
+      padding: 32px 32px 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    h2 {
+      margin: 0 0 12px;
+      font-size: 32px;
+      letter-spacing: -0.5px;
+      background: linear-gradient(135deg, var(--text-bright), var(--muted));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .sub {
+      margin: 0 0 16px;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, rgba(167, 139, 250, 0.25), rgba(34, 211, 238, 0.25));
+      color: #dbeafe;
+      font-size: 13px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      font-weight: 600;
+      animation: glow 2s ease-in-out infinite;
+    }
+
+    .content {
+      padding: 12px 32px 32px;
+    }
+
+    ol {
+      counter-reset: step;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    li {
+      position: relative;
+      padding: 28px 0 28px 60px;
+      border-top: 1px dashed rgba(255, 255, 255, 0.08);
+      transition: all 0.3s ease;
+    }
+
+    li:first-child {
+      border-top: none;
+    }
+
+    li:hover {
+      padding-left: 70px;
+    }
+
+    li::before {
+      counter-increment: step;
+      content: counter(step);
+      position: absolute;
+      left: 0;
+      top: 24px;
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: #0b1020;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      font-weight: 800;
+      font-size: 18px;
+      box-shadow: 0 8px 20px rgba(34, 211, 238, 0.4);
+      transition: all 0.3s ease;
+    }
+
+    li:hover::before {
+      transform: scale(1.1) rotate(10deg);
+      box-shadow: 0 12px 30px rgba(34, 211, 238, 0.6);
+    }
+
+    h3 {
+      margin: 0 0 10px;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-bright);
+    }
+
+    p {
+      margin: 0 0 12px;
+      color: #dbeafe;
+    }
+
+    code, pre {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+    }
+
+    .cmd {
+      margin: 12px 0 0;
+      background: var(--code);
+      color: #e2e8f0;
+      border: 1px solid rgba(34, 211, 238, 0.2);
+      border-radius: 12px;
+      padding: 16px 18px;
+      overflow: auto;
+      box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.3), 0 4px 12px rgba(0, 0, 0, 0.4);
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .cmd:hover {
+      border-color: rgba(34, 211, 238, 0.4);
+      box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.3), 0 6px 20px rgba(34, 211, 238, 0.2);
+    }
+
+    .path {
+      color: #93c5fd;
+      font-weight: 600;
+    }
+
+    .kv {
+      color: #a7f3d0;
+    }
+
+    .json {
+      white-space: pre;
+      line-height: 1.8;
+    }
+
+    .toolbar {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      justify-content: flex-end;
+      margin: 12px 0 0;
+    }
+
+    .btn {
+      padding: 10px 16px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: linear-gradient(180deg, rgba(34, 211, 238, 0.15), rgba(34, 211, 238, 0.05));
+      color: var(--accent);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(34, 211, 238, 0.3);
+      background: linear-gradient(180deg, rgba(34, 211, 238, 0.25), rgba(34, 211, 238, 0.15));
+    }
+
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    .note {
+      margin-top: 12px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      color: #fde68a;
+      background: rgba(251, 191, 36, 0.1);
+      border: 1px dashed rgba(251, 191, 36, 0.4);
+      border-radius: 12px;
+      padding: 14px 16px;
+      backdrop-filter: blur(5px);
+    }
+
+    .note.info {
+      color: #93c5fd;
+      background: rgba(34, 211, 238, 0.1);
+      border-color: rgba(34, 211, 238, 0.4);
+    }
+
+    .pill {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(52, 211, 153, 0.2);
+      color: var(--ok);
+      border: 1px solid rgba(52, 211, 153, 0.4);
+      font-size: 13px;
+      margin-left: 8px;
+      font-weight: 700;
+    }
+
+    .pill.price {
+      background: rgba(244, 114, 182, 0.2);
+      color: var(--accent-3);
+      border-color: rgba(244, 114, 182, 0.4);
+    }
+
+    footer {
+      padding: 16px 32px 28px;
+      color: var(--muted);
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      font-size: 14px;
+    }
+
+    .highlight {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .icon {
+      display: inline-block;
+      font-size: 20px;
+    }
+
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+      margin: 32px 0;
+    }
+
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 36px;
+      }
+      
+      .tabs {
+        flex-direction: column;
+        gap: 8px;
+      }
+      
+      .card {
+        margin-left: -10px;
+        margin-right: -10px;
+      }
+      
+      header, .content, footer {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+      
+      li {
+        padding-left: 50px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="hero">
+      <h1>🚀 AI 工具配置中心</h1>
+      <p>快速配置 Claude Code 和 Codex，开启高效的 AI 辅助编程体验</p>
+    </div>
+
+    <div class="tabs">
+      <button class="tab active" data-tab="claude">
+        <span class="icon">🤖</span> Claude Code
+      </button>
+      <button class="tab" data-tab="codex">
+        <span class="icon">⚡</span> Codex
+      </button>
+    </div>
+
+    <!-- Claude Code Tab -->
+    <div class="tab-content active" id="claude">
+      <div class="card">
+        <header>
+          <h2>Claude Code 配置指南</h2>
+          <p class="sub">
+            目前 claude code 价格：<span class="pill price">¥300/月</span> 
+            有<span class="pill price">$100–$150/天</span>
+          </p>
+          <span class="badge">✨ 适用于 Windows（含路径示例），其他平台亦可参考</span>
+        </header>
+
+        <div class="content">
+          <ol>
+            <li>
+              <h3>📦 安装命令行工具</h3>
+              <p>使用 npm 全局安装 Claude Code：</p>
+              <pre class="cmd"><code>npm install -g @anthropic-ai/claude-code</code></pre>
+            </li>
+
+            <li>
+              <h3>⚙️ 创建或编辑配置文件</h3>
+              <p>在用户目录下新建（或编辑）设置文件：</p>
+              <pre class="cmd"><code><span class="path">%USERPROFILE%\.claude\settings.json</span></code></pre>
+              <div class="toolbar">
+                <button class="btn" id="copyBtnClaude" aria-label="复制配置">📋 复制配置</button>
+              </div>
+              <pre class="cmd json" id="configBlockClaude">{
+  "env": {
+    "ANTHROPIC_AUTH_TOKEN": "you-key",
+    "ANTHROPIC_BASE_URL": "https://mfai.xiaoyulove.xyz",
+    "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": 1
+  },
+  "permissions": {
+    "allow": [],
+    "deny": []
+  },
+  "apiKeyHelper": "echo 'you-key'"
+}</pre>
+              <div class="note">
+                <div>⚠️</div>
+                <div>请妥善保管密钥，避免公开分享；如有需要，建议替换为你自己的有效密钥与可信的 API 地址。</div>
+              </div>
+            </li>
+
+            <li>
+              <h3>✅ 验证安装</h3>
+              <p>保存配置后，执行下列命令查看是否可用：</p>
+              <pre class="cmd"><code>claude --version</code></pre>
+              <p>若输出版本号，即表示安装成功。接下来可以在任意目录运行：</p>
+              <pre class="cmd"><code>claude</code></pre>
+            </li>
+          </ol>
+        </div>
+
+        <footer>
+          <div>✨ 完成以上步骤后即可在命令行中使用 <code class="highlight">claude-code</code></div>
+          <div>💡 小提示：如遇网络/证书/权限问题，优先检查代理与环境变量</div>
+        </footer>
+      </div>
+    </div>
+
+    <!-- Codex Tab -->
+    <div class="tab-content" id="codex">
+      <div class="card">
+        <header>
+          <h2>Codex 配置指南</h2>
+          <p class="sub">
+            Codex 是一款强大的 AI 代码辅助工具，支持多种编程语言和框架
+          </p>
+          <span class="badge">🔥 简单配置，即刻使用</span>
+        </header>
+
+        <div class="content">
+          <ol>
+            <li>
+              <h3>📦 安装 OpenAI Codex CLI 工具</h3>
+              <p>使用 npm 或 brew 安装 Codex 命令行工具：</p>
+              <pre class="cmd"><code># 使用 npm 全局安装（推荐）
+npm install -g @openai/codex
+
+# 或使用 Homebrew (macOS/Linux)
+brew install codex</code></pre>
+              <div class="note info">
+                <div>💡</div>
+                <div>确保已安装 Node.js (npm 方式) 或 Homebrew (brew 方式)。安装完成后可在任意目录使用 codex 命令。</div>
+              </div>
+            </li>
+
+            <!-- <li>
+              <h3>📁 创建配置目录</h3>
+              <p>在用户目录下创建 .codex 文件夹：</p>
+              <pre class="cmd"><code># Windows
+mkdir %USERPROFILE%\.codex
+
+# macOS / Linux
+mkdir ~/.codex</code></pre>
+            </li> -->
+
+            <li>
+              <h3>⚙️ 配置 config.toml 文件</h3>
+              <p>在 <span class="path">~/.codex/config.toml</span> 创建配置文件：</p>
+              <div class="toolbar">
+                <button class="btn" id="copyBtnCodexConfig" aria-label="复制配置">📋 复制配置</button>
+              </div>
+              <pre class="cmd json" id="configBlockCodexConfig">model_provider = "xiaoyumod"
+model = "gpt-5"  # 可更改为 model = "gpt-5-codex"
+model_reasoning_effort = "high"
+disable_response_storage = true
+
+[model_providers.xiaoyumod]
+name = "xiaoyumod"
+base_url = "https://mfai.xiaoyulove.xyz/v1"
+wire_api = "responses"
+requires_openai_auth = true</pre>
+              <div class="note info">
+                <div>ℹ️</div>
+                <div>此配置使用 xiaoyumod 作为模型提供商，支持 gpt-5 和 gpt-5-codex 模型。推理级别设为 high 可获得更好的代码质量。</div>
+              </div>
+            </li>
+
+            <li>
+              <h3>🔑 配置 auth.json 文件</h3>
+              <p>在 <span class="path">~/.codex/auth.json</span> 创建认证文件：</p>
+              <div class="toolbar">
+                <button class="btn" id="copyBtnCodexAuth" aria-label="复制配置">📋 复制配置</button>
+              </div>
+              <pre class="cmd json" id="configBlockCodexAuth">{
+  "OPENAI_API_KEY": "your-api-key-here"
+}</pre>
+              <div class="note">
+                <div>⚠️</div>
+                <div>请将 <code>your-api-key-here</code> 替换为你的真实 API 密钥。密钥需要从相应的服务提供商处获取，请妥善保管。</div>
+              </div>
+            </li>
+
+            <li>
+              <h3>✅ 验证安装</h3>
+              <p>运行以下命令验证 Codex 是否正确安装：</p>
+              <pre class="cmd"><code>codex --version</code></pre>
+              <!-- <p>检查配置是否正确：</p>
+              <pre class="cmd"><code>codex config show</code></pre>
+              <div class="note info">
+                <div>💡</div>
+                <div>如果配置正确，应该能看到你设置的模型提供商和相关参数信息。</div> -->
+              </div>
+            </li>
+
+            <li>
+              <h3>🚀 开始使用</h3>
+              <p>在终端中启动 Codex 交互模式：</p>
+              <pre class="cmd"><code>codex</code></pre>
+              <p>或者直接提问：</p>
+              <pre class="cmd"><code>codex "如何在 Python 中读取 JSON 文件？"</code></pre>
+              <div class="note">
+                <div>⭐</div>
+                <div>Codex 支持多轮对话、代码生成、调试辅助等功能。你可以在项目目录中使用它来获取上下文相关的帮助。</div>
+              </div>
+            </li>
+          </ol>
+        </div>
+
+        <footer>
+          <div>🎉 配置完成后，即可享受 AI 辅助编程的强大功能！</div>
+          <div>📚 更多功能请查看：<code class="highlight">codex --help</code></div>
+        </footer>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div style="text-align: center; color: var(--muted); padding: 20px 0;">
+      <p>💻 Happy Coding! 遇到问题请查阅官方文档或联系技术支持</p>
+      <p style="font-size: 14px; margin-top: 10px;">
+        <span class="highlight">Claude Code</span> • <span class="highlight">Codex</span> • <span class="highlight">AI-Powered Development</span>
+      </p>
+    </div>
+  </div>
+
+  <script>
+    // Tab switching
+    const tabs = document.querySelectorAll('.tab');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        const tabName = tab.dataset.tab;
+        
+        tabs.forEach(t => t.classList.remove('active'));
+        tabContents.forEach(tc => tc.classList.remove('active'));
+        
+        tab.classList.add('active');
+        document.getElementById(tabName).classList.add('active');
+      });
+    });
+
+    // Copy button for Claude Code config
+    const btnClaude = document.getElementById('copyBtnClaude');
+    const preClaude = document.getElementById('configBlockClaude');
+    
+    btnClaude.addEventListener('click', async () => {
+      const text = preClaude.innerText;
+      try {
+        await navigator.clipboard.writeText(text);
+        btnClaude.innerHTML = '✅ 已复制';
+        setTimeout(() => btnClaude.innerHTML = '📋 复制配置', 1600);
+      } catch (e) {
+        btnClaude.innerHTML = '❌ 复制失败，请手动复制';
+        setTimeout(() => btnClaude.innerHTML = '📋 复制配置', 2200);
+      }
+    });
+
+    // Copy button for Codex config.toml
+    const btnCodexConfig = document.getElementById('copyBtnCodexConfig');
+    const preCodexConfig = document.getElementById('configBlockCodexConfig');
+    
+    btnCodexConfig.addEventListener('click', async () => {
+      const text = preCodexConfig.innerText;
+      try {
+        await navigator.clipboard.writeText(text);
+        btnCodexConfig.innerHTML = '✅ 已复制';
+        setTimeout(() => btnCodexConfig.innerHTML = '📋 复制配置', 1600);
+      } catch (e) {
+        btnCodexConfig.innerHTML = '❌ 复制失败，请手动复制';
+        setTimeout(() => btnCodexConfig.innerHTML = '📋 复制配置', 2200);
+      }
+    });
+
+    // Copy button for Codex auth.json
+    const btnCodexAuth = document.getElementById('copyBtnCodexAuth');
+    const preCodexAuth = document.getElementById('configBlockCodexAuth');
+    
+    btnCodexAuth.addEventListener('click', async () => {
+      const text = preCodexAuth.innerText;
+      try {
+        await navigator.clipboard.writeText(text);
+        btnCodexAuth.innerHTML = '✅ 已复制';
+        setTimeout(() => btnCodexAuth.innerHTML = '📋 复制配置', 1600);
+      } catch (e) {
+        btnCodexAuth.innerHTML = '❌ 复制失败，请手动复制';
+        setTimeout(() => btnCodexAuth.innerHTML = '📋 复制配置', 2200);
+      }
+    });
+
+    // Add smooth scroll behavior
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
