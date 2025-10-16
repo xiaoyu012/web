@@ -34,10 +34,10 @@
     body {
       margin: 0;
       background: 
-        radial-gradient(1200px 600px at 10% -10%, rgba(167, 139, 250, 0.18), transparent 60%),
-        radial-gradient(800px 500px at 110% 10%, rgba(34, 211, 238, 0.15), transparent 50%),
-        radial-gradient(1000px 400px at 50% 100%, rgba(244, 114, 182, 0.12), transparent 50%),
-        var(--bg);
+        radial-gradient(1200px 600px at 10% -10%, rgba(167, 139, 250, 0.25), transparent 60%),
+        radial-gradient(800px 500px at 110% 10%, rgba(34, 211, 238, 0.22), transparent 50%),
+        radial-gradient(1000px 400px at 50% 100%, rgba(244, 114, 182, 0.18), transparent 50%),
+        linear-gradient(135deg, #1e2a4a 0%, #2d3a5c 50%, #243a52 100%);
       background-attachment: fixed;
       color: var(--text);
       font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", "Helvetica Neue", Arial, sans-serif;
@@ -99,7 +99,7 @@
     }
 
     .hero p {
-      color: var(--muted);
+      color: #cbd5f5;
       font-size: 18px;
       max-width: 600px;
       margin: 0 auto;
@@ -148,17 +148,19 @@
     .tab:hover {
       color: var(--text-bright);
       transform: translateY(-2px);
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.2);
     }
 
     .tab.active {
       color: var(--text-bright);
-      background: linear-gradient(135deg, rgba(34, 211, 238, 0.2), rgba(167, 139, 250, 0.2));
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      background: linear-gradient(135deg, rgba(61, 213, 243, 0.35), rgba(183, 148, 246, 0.35));
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 8px 25px rgba(61, 213, 243, 0.4);
     }
 
     .tab.active::before {
-      opacity: 0.15;
+      opacity: 0.25;
     }
 
     .tab-content {
@@ -171,11 +173,11 @@
     }
 
     .card {
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
-      border: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.04));
+      border: 1px solid rgba(255, 255, 255, 0.15);
       backdrop-filter: saturate(130%) blur(10px);
       border-radius: var(--radius);
-      box-shadow: var(--shadow);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
       overflow: hidden;
       margin-bottom: 24px;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -183,7 +185,8 @@
 
     .card:hover {
       transform: translateY(-4px);
-      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+      border-color: rgba(255, 255, 255, 0.2);
     }
 
     header {
@@ -203,7 +206,7 @@
 
     .sub {
       margin: 0 0 16px;
-      color: var(--muted);
+      color: #cbd5f5;
       font-size: 15px;
       line-height: 1.7;
     }
@@ -329,9 +332,9 @@
     .btn {
       padding: 10px 16px;
       border-radius: 10px;
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      background: linear-gradient(180deg, rgba(34, 211, 238, 0.15), rgba(34, 211, 238, 0.05));
-      color: var(--accent);
+      border: 1px solid rgba(61, 213, 243, 0.4);
+      background: linear-gradient(180deg, rgba(61, 213, 243, 0.25), rgba(61, 213, 243, 0.15));
+      color: #5de3ff;
       cursor: pointer;
       transition: all 0.3s ease;
       font-weight: 600;
@@ -340,8 +343,9 @@
 
     .btn:hover {
       transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(34, 211, 238, 0.3);
-      background: linear-gradient(180deg, rgba(34, 211, 238, 0.25), rgba(34, 211, 238, 0.15));
+      box-shadow: 0 8px 20px rgba(61, 213, 243, 0.5);
+      background: linear-gradient(180deg, rgba(61, 213, 243, 0.35), rgba(61, 213, 243, 0.25));
+      border-color: rgba(61, 213, 243, 0.6);
     }
 
     .btn:active {
@@ -387,8 +391,8 @@
 
     footer {
       padding: 16px 32px 28px;
-      color: var(--muted);
-      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      color: #cbd5f5;
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -626,7 +630,7 @@ requires_openai_auth = true</pre>
 
     <div class="divider"></div>
 
-    <div style="text-align: center; color: var(--muted); padding: 20px 0;">
+    <div style="text-align: center; color: #cbd5f5; padding: 20px 0;">
       <p>💻 Happy Coding! 遇到问题请查阅官方文档或联系技术支持</p>
       <p style="font-size: 14px; margin-top: 10px;">
         <span class="highlight">Claude Code</span> • <span class="highlight">Codex</span> • <span class="highlight">AI-Powered Development</span>
