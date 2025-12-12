@@ -449,9 +449,9 @@
       <h1>🚀 AI 工具配置中心</h1>
       <p>快速配置 Claude Code 和 Codex，开启高效的 AI 辅助编程体验</p>
             <!-- 目前 claude code&codex价格：<span class="pill price">¥0.15</span>  -->
-            有<span class="pill price">1$</span><br>
-            联系方式:<a href="https://img.remit.ee/api/file/BQACAgUAAyEGAASHRsPbAAEHMbppFXTntBwBAAHCiT9-z9HKyTNwJygAAlMuAALjGbFUxHDh_m2NYcY2BA.png" target="_blank" style="color: #ff69b4;">点击下载售后照片</a>
-    </div>
+            <!-- 有<span class="pill price">1$</span><br> -->
+            <!-- 联系方式:<a href="https://img.remit.ee/api/file/BQACAgUAAyEGAASHRsPbAAEHMbppFXTntBwBAAHCiT9-z9HKyTNwJygAAlMuAALjGbFUxHDh_m2NYcY2BA.png" target="_blank" style="color: #ff69b4;">点击下载售后照片</a>
+    </div> -->
     <div class="tabs">
       <button class="tab active" data-tab="claude">
         <span class="icon">🤖</span> Claude Code
@@ -487,7 +487,7 @@
               <pre class="cmd json" id="configBlockClaude">{
   "env": {
     "ANTHROPIC_AUTH_TOKEN": "you-key",
-    "ANTHROPIC_BASE_URL": "https://api.motchat.com",
+    "ANTHROPIC_BASE_URL": "https://api.motchat.com",#国内用ip地址，演示的是国外域名
     "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1"
   },
   "permissions": {
@@ -568,7 +568,7 @@ disable_response_storage = true
 
 [model_providers.xiaoyumod]
 name = "xiaoyumod"
-base_url = "https://api.motchat.com/v1"
+base_url = "https://api.motchat.com/v1"#别忘了v1
 wire_api = "responses"
 requires_openai_auth = true</pre>
               <div class="note info">
@@ -713,6 +713,7 @@ requires_openai_auth = true</pre>
   </script>
 </body>
 </html>
+
 
 
 
